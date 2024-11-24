@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اداة مولد رابط المشاركات</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 20px;
+            direction: rtl;
+            text-align: right;
+        }
+        .tool-wrapper .container {
+            max-width: 600px;
+            margin: auto;
+            background: #e0f7fa;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            border-radius: 15px;
+            text-align: right;
+        }
+        .tool-wrapper .input-group {
+            margin-bottom: 15px;
+        }
+        .tool-wrapper .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .tool-wrapper .input-group input,
+        .tool-wrapper .input-group textarea {
+            width: 100%;
+            padding: 12px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        .tool-wrapper .input-group input:focus,
+        .tool-wrapper .input-group textarea:focus {
+            border-color: #00796b;
+            box-shadow: 0 0 5px rgba(0, 121, 107, 0.5);
+            outline: none;
+        }
+        .tool-wrapper button {
+            width: 100%;
+            padding: 12px;
+            background-color: #00796b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s, transform 0.3s;
+        }
+        .tool-wrapper button:hover {
+            background-color: #004d40;
+            transform: scale(1.05);
+        }
+        .tool-wrapper .buttons {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .tool-wrapper .buttons div {
+            flex: 1;
+            text-align: center;
+        }
+        .tool-wrapper .buttons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s, transform 0.3s;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        .tool-wrapper .buttons a:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        .tool-wrapper .copy-link {
+            display: block;
+            margin-top: 5px;
+            padding: 5px;
+            background: #00796b;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+        }
+        .tool-wrapper .copy-link:hover {
+            background: #004d40;
+            transform: scale(1.05);
+        }
+        .tool-wrapper .facebook { background: #3b5998; }
+        .tool-wrapper .twitter { background: #1da1f2; }
+        .tool-wrapper .whatsapp { background: #25d366; }
+        .tool-wrapper .telegram { background: #0088cc; }
+        .tool-wrapper .icon {
+            margin-right: 8px;
+        }
+        @media (max-width: 600px) {
+            .tool-wrapper .container {
+                padding: 10px;
+            }
+            .tool-wrapper h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="tool-wrapper">
+    <div class="container">
+        <h1>اداة مولد رابط المشاركات</h1>
+        <div class="input-group">
+            <label>رابط المقالة</label>
+            <input id="link" placeholder="أدخل رابط المقالة" type="text" />
+        </div>
+        <div class="input-group">
+            <label>عنوان المقالة</label>
+            <input id="title" placeholder="أدخل عنوان المقالة" type="text" />
+        </div>
+        <div class="input-group">
+            <label>وصف مختصر</label>
+            <textarea id="description" placeholder="أدخل وصف مختصر (اختياري)"></textarea>
+        </div>
+        <button onclick="generateLinks()">توليد الروابط</button>
+        <div class="buttons" id="buttons"></div>
+    </div>
+</div>
+
+<script>
+    function generateLinks() {
+        var link = document.getElementById('link').value;
+        var title = document.getElementById('title').value;
+        var description = document.getElementById('description').value;
+
+        var facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(link)}&quote=${encodeURIComponent(title + ' - ' + description)}`;
+        var twitterUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(link)}&text=${encodeURIComponent(title + ' - ' + description)}`;
+        var whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(title + ' - ' + description + ' ' + link)}`;
+        var telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(title + ' - ' + description)}`;
+
+        var buttons = document.getElementById('buttons');
+        buttons.innerHTML = `
+            <div>
+                <a href="${facebookUrl}" class="facebook" target="_blank"><span class="icon"><i class="fab fa-facebook-f"></i></span>فيسبوك</a>
+                <a class="copy-link" onclick="copyToClipboard('${facebookUrl}')">نسخ الرابط</a>
+            </div>
+            <div>
+                <a href="${twitterUrl}" class="twitter" target="_blank"><span class="icon"><i class="fab fa-twitter"></i></span>تويتر</a>
+                <a class="copy-link" onclick="copyToClipboard('${twitterUrl}')">نسخ الرابط</a>
+            </div>
+            <div>
+                <a href="${whatsappUrl}" class="whatsapp" target="_blank"><span class="icon"><i class="fab fa-whatsapp"></i></span>واتساب</a>
+                <a class="copy-link" onclick="copyToClipboard('${whatsappUrl}')">نسخ الرابط</a>
+            </div>
+            <div>
+                <a href="${telegramUrl}" class="telegram" target="_blank"><span class="icon"><i class="fab fa-telegram-plane"></i></span>تيليجرام</a>
+                <a class="copy-link" onclick="copyToClipboard('${telegramUrl}')">نسخ الرابط</a>
+            </div>
+        `;
+    }
+
+    function copyToClipboard(url) {
+        navigator.clipboard.writeText(url).then(() => {
+            alert("تم نسخ الرابط بنجاح!");
+        }).catch(err => {
+            console.error('فشل النسخ: ', err);
+        });
+    }
+</script>
+
+</body>
+</html>
